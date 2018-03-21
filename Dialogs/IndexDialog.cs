@@ -27,7 +27,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                 PromptDialog.Confirm(
                     context,
                     AfterResetAsync,
-                    "Hola Barry!",
+                    "Hola "+message.From.Name,
                     "Didn't get that!",
                     promptStyle: PromptStyle.Auto);
             }
