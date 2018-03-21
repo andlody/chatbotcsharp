@@ -9,7 +9,7 @@ using System.Net.Http;
 namespace Microsoft.Bot.Sample.SimpleEchoBot
 {
     [Serializable]
-    public class EchoDialog : IDialog<object>
+    public class IndexDialog : IDialog<object>
     {
         protected int count = 1;
 
@@ -27,13 +27,13 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                 PromptDialog.Confirm(
                     context,
                     AfterResetAsync,
-                    "Hola Barry",
+                    "Hola Barry!",
                     "Didn't get that!",
                     promptStyle: PromptStyle.Auto);
             }
             else
             {
-                await context.PostAsync($"{this.count++}: Usted dijo {message.Text}");
+                await context.PostAsync($"{this.count++}: Usted dijo: {message.Text}");
                 context.Wait(MessageReceivedAsync);
             }
         }
