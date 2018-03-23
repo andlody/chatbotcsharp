@@ -24,7 +24,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             // check if activity is of type message
             if (activity != null && activity.GetActivityType() == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new IndexDialog());
+                await Conversation.SendAsync(activity, () => new RouterDialog());
             }
             else
             {
@@ -42,10 +42,6 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
-                // Handle conversation state changes, like members being added and removed
-                // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
-                // Not available in all channels
-
                 IConversationUpdateActivity update = message;
                 var cliente = new ConnectorClient(new Uri(message.ServiceUrl),new MicrosoftAppCredentials());
                 if (update.MembersAdded != null && update.MembersAdded.Any())
@@ -59,7 +55,6 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                             cliente.Conversations.ReplyToActivityAsync(reply);
                         }
                     }
-
                 }
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
