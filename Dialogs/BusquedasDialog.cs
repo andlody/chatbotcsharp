@@ -18,11 +18,17 @@ namespace SimpleEchoBot.Dialogs
 
             switch (message.Text.ToLower())
             {
-                case "id":
-                    await Views.BusquedaView.BusquedaId(context, result);
+                case "1_popular":
+                    await __libs.ProductosGetURL.get(context, result, 1, message.Text);
                     break;
-                case "cancelar":
+                case "2_votado":
                     await context.PostAsync("canceaste barrigon.1");
+                    break;
+                case "3_cartelera":
+                    await context.PostAsync("canceaste barrigon.1");
+                    break;
+                default:
+
                     break;
             }
         }

@@ -41,5 +41,27 @@ namespace SimpleEchoBot.Views
             };
             return h.ToAttachment();
         }
+
+        public static async Task carruselPeliculas(IDialogContext context, IAwaitable<object> result, BusquedaJson obj)
+        {
+            var reply = context.MakeMessage();
+            reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+
+            for (int i = 0; i < 5; i++)
+            {
+                var h = new HeroCard
+                {
+                    Title = obj.results[i].title + " (" + obj.results[i].release_date.Split('-')[0] + ")",
+                    Subtitle = obj.results[i].original_title + " ",
+                    Text = " " + obj.results[i].overview,
+                    Images = new List<CardImage> { new CardImage("https://image.tmdb.org/t/p/w342/" + obj.results[i].poster_path) },
+                    Buttons = new List<CardAction> { new CardAction(ActionTypes.OpenUrl, "Ver más", value: "http://google.com") }
+                };
+                reply.Attachments.Add(h.ToAttachment());
+            }
+
+            await context.PostAsync(reply);
+            //context.Wait(MessageR);
+        }
     }
 }

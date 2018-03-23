@@ -18,8 +18,8 @@ namespace SimpleEchoBot.Views
                  );  */
             var h = new HeroCard
             {
-                Title = "Tengo algunas opciones para usted!",
-                Text = "Si deseas escribe el nombre de la pelicula y a buscaré.",
+                Title = "Tengo algunas opciones!",
+                Text = "Si deseas escribe el nombre de la pelicula y la buscaré.",
                 Images = new List<CardImage> { new CardImage("https://images.pexels.com/photos/247932/pexels-photo-247932.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") },
                 //Images = new List<CardImage> { new CardImage("http://tiendabots.azurewebsites.net/__public/buscar.png") },
                 Buttons = new List<CardAction> {
