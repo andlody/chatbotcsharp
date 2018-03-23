@@ -14,9 +14,9 @@ namespace SimpleEchoBot.Dialogs
 
         public static async Task BusquedaGeneral_Result(IDialogContext context, IAwaitable<object> result)
         {
-            string text = (string)await result;
+            var message = await result as Activity;
 
-            switch (text.ToLower())
+            switch (message.Text.ToLower())
             {
                 case "id":
                     await Views.BusquedaView.BusquedaId(context, result);
@@ -28,19 +28,10 @@ namespace SimpleEchoBot.Dialogs
         }
 
         public static async Task BusquedaId_Result(IDialogContext context, IAwaitable<object> result)
-        {
-            //bool bnd = false;
-            string text = "cancelar";
-            try
-            {
-                text = (string)await result;
-            }
-            catch (Exception e) {
-                var message = await result as Activity;
-                text = message.Text;
-            }
+        {            
+            var message = await result as Activity;      
             
-            switch (text.ToLower())
+            switch (message.Text.ToLower())
             {
                 case "cancelar":
                     await context.PostAsync("canceaste barrigon.2");

@@ -176,6 +176,7 @@
   <ItemGroup>
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
+    <Content Include="__public\buscar.png" />
     <Content Include="__public\ima.jpg" />
     <Content Include="Web.config" />
   </ItemGroup>

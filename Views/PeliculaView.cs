@@ -33,9 +33,9 @@ namespace SimpleEchoBot.Views
 
             var h = new HeroCard
             {
-                Title = pelicula.title,
-                Subtitle = pelicula.original_title+" ("+pelicula.release_date.Split('-')[0]+")",
-                Text = pelicula.overview,
+                Title = pelicula.title + " (" + pelicula.release_date.Split('-')[0] + ")",
+                Subtitle = pelicula.original_title+" ",
+                Text = " "+pelicula.overview,
                 Images = new List<CardImage> { new CardImage("https://image.tmdb.org/t/p/w342/"+pelicula.poster_path) },
                 Buttons = new List<CardAction> { new CardAction(ActionTypes.OpenUrl, "Ver más", value: "http://google.com") }
             };
