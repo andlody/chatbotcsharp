@@ -52,7 +52,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
         private static async Task luis(IDialogContext context, IAwaitable<object> result)
         {
-            const string idLuis     = "6af33858-401c-4d62-a4d2-2fe3c851a0a8";
+            const string idLuis     = "3f85c553-3eec-4ff1-8a8d-d409800e7142";
             const string keyLuis    = "bb0918a4853048fa9e03090b9649fee7";
 
             var message = await result as Activity;
@@ -65,10 +65,20 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             switch (luis.intents[0].intent)
             {
                 case "saludo":
-
+                    await SaludoDialog.saludo(context, result);
                     break;
                 case "despedida":
-
+                    await DespedidaDialog.despedida(context, result);
+                    break;
+                case "recomendacion":
+                    await LuisDialog.recomendacion(context, result,luis);
+                    break;
+                case "buscar_producto":
+                    await LuisDialog.buscar_producto(context, result, luis);
+                    break;
+                case "None":
+                    await context.PostAsync("creo que no te he entendido");
+                    context.Wait(router);
                     break;
             }
         }
@@ -134,46 +144,6 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                 public async Task None(IDialogContext context, LuisResult result)
                 {
                     await SaludoDialog.saludo(context, result);
-                }
-
-
-
-
-
-
-
-                /* =================================================================== 
-                [LuisIntent("None")]
-                public async Task None(IDialogContext context, LuisResult result)
-                {
-                    await context.PostAsync("Lo siento pero no estoy programadao para este tipo de preguntas");
-                    await Task.Delay(2000);
-                    await context.PostAsync("¿En qué más te puedo ayudar?");
-                }
-
-                [LuisIntent("ObtenerAgradecimientos")]
-                public async Task ObtenerAgradecimientos(IDialogContext context, LuisResult result)
-                {
-                    /* await context.PostAsync("Siempre estaré para ayudarte");
-                     await Task.Delay(2000);
-                     await context.PostAsync("¿En qué más te puedo ayudar?");
-                    await SaludoDialog.saludo(context,result);
-                }
-
-                [LuisIntent("HacerReclamo")]
-                public async Task HacerReclamo(IDialogContext context, LuisResult result)
-                {
-                    await context.PostAsync("Gracias por reportarlo: "+result.Query);
-                    await Task.Delay(2000);
-                    await context.PostAsync("Por favor registra tu problema en el siguiente enlace:");
-
-                    EntityRecommendation enre;
-                    if(result.TryFindEntity("Per",out enre))
-                    {
-                        enre.Entity.ToLower(); //get entidad value en minuscula
-
-
-                    }
                 }
                 */
     }

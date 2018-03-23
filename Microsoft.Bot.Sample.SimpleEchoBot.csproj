@@ -182,6 +182,8 @@
   <ItemGroup>
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\BusquedasDialog.cs" />
+    <Compile Include="Dialogs\DespedidaDialog.cs" />
+    <Compile Include="Dialogs\LuisDialog.cs" />
     <Compile Include="Dialogs\PeliculaDialog.cs" />
     <Compile Include="Dialogs\_RouterDialog.cs" />
     <Compile Include="Dialogs\SaludoDialog.cs" />

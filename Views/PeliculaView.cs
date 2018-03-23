@@ -130,9 +130,9 @@ namespace SimpleEchoBot.Views
 
         public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video,string id)
         {
-            var reply = context.MakeMessage();
-            /*       var videocard = new VideoCard
-                   {
+            /*  var reply = context.MakeMessage();
+                var videocard = new VideoCard
+                {
                        Subtitle = video.results[0].name,
                        Media = new List<MediaUrl>
                        {
@@ -140,18 +140,12 @@ namespace SimpleEchoBot.Views
                            {
                                Url = "https://youtu.be/"+video.results[0].key
                            }
-                       }
+                        }
+                };
+            reply.Attachments.Add(videocard.ToAttachment());
 
-
-
-        };
-            reply.Attachments.Add(videocard.ToAttachment());*/
-
-            //Activity replyToConversation = activity.CreateReply("Should go to conversation, with a hero card");
-            reply.Attachments.Add(new Attachment(contentType: "video/mp4", name: "Simple Attachment Name", thumbnailUrl: "https://s29.postimg.org/ei98jsp7r/My_Bot.jpg", contentUrl: "https://youtu.be/A9Vu9n7YxrI"));
-
-
-            await context.PostAsync(reply);
+            await context.PostAsync(reply);*/
+            await context.PostAsync("Lo lamento, estamos teniendo un problema con el video");
 
             await buscarPeliculaSimilar(context,result,id);
         }
