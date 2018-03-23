@@ -55,6 +55,7 @@ namespace SimpleEchoBot.Views
             {                
                 reply.Type = ActivityTypes.Typing;
                 await context.PostAsync(reply);
+                await Task.Delay(4000);
                 await context.PostAsync("Esos son todos mis resultados de busqueda.");
             }
             context.Wait(Dialogs.BusquedasDialog.carruselPeliculas_Result);
@@ -90,18 +91,29 @@ namespace SimpleEchoBot.Views
                 Name = pelicula.id + ".jpg"
             });
             if (pelicula.poster_path != null) await context.PostAsync(reply);
-            await context.PostAsync(pelicula.title + " ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es " + pelicula.original_title + ", fue producido en " + pelicula.production_countries[0].name + " por " + pelicula.production_companies[0].name);
-            await context.PostAsync(pelicula.overview);
-           
-                PromptDialog.Choice(
-                    context,
-                    PeliculaDialog.verVideo,
-                    new[] { ""+pelicula.id, "No" },
-                    "¿Quieres ver un video?",
-                    promptStyle: PromptStyle.Keyboard,
-                    descriptions: new[] { "Si", "No" }
-                 );
-           
+            await context.PostAsync(pelicula.title + "es una película de "+pelicula.genres[0].name+" ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es " + pelicula.original_title + ", fue producido en " + pelicula.production_countries[0].name + " por " + pelicula.production_companies[0].name);
+            if(!pelicula.overview.Equals("")) await context.PostAsync(pelicula.overview);
+
+            await verVideoConsulta(context,result,""+pelicula.id);        
+        }
+
+        public static async Task verVideoConsulta(IDialogContext context, IAwaitable<object> result, string id)
+        {
+            var reply = context.MakeMessage();
+            var h = new HeroCard
+            {
+                Text = "¿Deseas ver el Trailer de la pelicula?.",
+                Buttons = new List<CardAction> {
+                    new CardAction(ActionTypes.PostBack, "Si", value: id),
+                    new CardAction(ActionTypes.PostBack, "No", value: "no")
+                }
+            };
+
+            reply = context.MakeMessage();
+            reply.Attachments.Add(h.ToAttachment());
+
+            await context.PostAsync(reply);
+            context.Wait(PeliculaDialog.verVideo);
         }
 
         public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video)
@@ -127,29 +139,6 @@ namespace SimpleEchoBot.Views
             {
                 await context.PostAsync("No lamento :( no encontre ningun video.");
             }
-            context.Wait(_RouterDialog.router);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public static async Task attachment(IDialogContext context, IAwaitable<object> result, object obj)
-        {
-            var reply = context.MakeMessage();
-
-            //var att = PeliculaHeroResumen((PeliculaJson)obj);
-            // reply.Attachments.Add(att);
-
-            await context.PostAsync(reply);
             context.Wait(_RouterDialog.router);
         }
     }

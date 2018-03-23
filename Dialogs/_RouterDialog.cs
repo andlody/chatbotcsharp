@@ -9,6 +9,7 @@ using Microsoft.Bot.Builder.Luis.Models;
 using SimpleEchoBot.Dialogs;
 using Newtonsoft.Json;
 using SimpleEchoBot.__libs;
+using SimpleEchoBot.Models;
 
 namespace Microsoft.Bot.Sample.SimpleEchoBot
 {
@@ -26,10 +27,19 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             switch (message.Text.ToLower())
             {
                 case "hola":
-                    await context.PostAsync("Hola soy un bot.");
+                    await context.PostAsync("Hola soy un chatbot, escribe: buscar"); context.Wait(router);
                     break;
-                case "chao":
-                    await context.PostAsync("Chao amiguito");
+                case "hello":
+                    await context.PostAsync("Hola como estas, yo hablo español, escribe: buscar"); context.Wait(router);
+                    break;
+                case "hi":
+                    await context.PostAsync("Yo hablo español, escribe: buscar"); context.Wait(router);
+                    break;
+                case "info":
+                    await context.PostAsync("Esta es una pagina de guia de peliculas, escribe: buscar"); context.Wait(router);
+                    break;
+                case "help":
+                    await context.PostAsync("Me gustan ver peliculas. Esta es una pagina de guia de peliculas, escribe: buscar");context.Wait(router);
                     break;
                 case "buscar":
                     await BusquedasDialog.BusquedaGeneral(context,result);
@@ -50,7 +60,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
             HttpClient client = new HttpClient();
             string response = await client.GetStringAsync(new Uri($"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/{idLuis}?subscription-key={keyLuis}&verbose=true&timezoneOffset=0&q={query}"));
-            LuisJson luis = JsonConvert.DeserializeObject<LuisJson>(response);
+            Luis luis = JsonConvert.DeserializeObject<Luis>(response);
 
             switch (luis.intents[0].intent)
             {

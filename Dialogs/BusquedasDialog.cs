@@ -1,5 +1,6 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.Bot.Sample.SimpleEchoBot;
 using System;
 using System.Threading.Tasks;
 
@@ -48,31 +49,11 @@ namespace SimpleEchoBot.Dialogs
             {
                 await __libs.ProductosGetURL.get(context, result, 0, a[1], -1);
             }
-        }
-
-
-
-
-
-
-
-
-
-
-
-        public static async Task BusquedaId_Result(IDialogContext context, IAwaitable<object> result)
-        {            
-            var message = await result as Activity;      
-            
-            switch (message.Text.ToLower())
+            else
             {
-                case "cancelar":
-                    await context.PostAsync("canceaste barrigon.2");
-                    break;
-                default:
-                    //await Views.PeliculaView.peliculaResumen(context, result);
-                    break;
+                await _RouterDialog.router(context,result);
             }
         }
+
     }
 }

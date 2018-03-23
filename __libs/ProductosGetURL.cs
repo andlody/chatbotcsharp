@@ -39,7 +39,14 @@ namespace SimpleEchoBot.__libs
                     await Views.PeliculaView.verVideo(context, result, JsonConvert.DeserializeObject<Video>(response));
                     break;
                 default:
-                    await Views.PeliculaView.carruselPeliculas(context, result, JsonConvert.DeserializeObject<Busqueda>(response), tipo, text, fin);
+                    Busqueda bsq = JsonConvert.DeserializeObject<Busqueda>(response);
+                    if (bsq.results.Length > 0)
+                    {
+                        await Views.PeliculaView.carruselPeliculas(context, result, bsq, tipo, text, fin);
+                    }else
+                    {
+                        await Views.BusquedaView.noEncontrado(context, result);
+                    }
                     break;
             }                    
         }

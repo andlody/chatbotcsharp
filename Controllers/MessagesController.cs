@@ -51,7 +51,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                         if(nuevo.Id != message.Recipient.Id)
                         {
                             var reply = message.CreateReply();
-                            reply.Text = "Hola, bienvenido " + nuevo.Name+". Aquí econtraras todas las peliculas que busques.";
+                            reply.Text = "Hola " + nuevo.Name+". Aquí econtraras muchas peliculas, puedo ayudarte a encontralas.";
                             cliente.Conversations.ReplyToActivityAsync(reply);
                         }
                     }
