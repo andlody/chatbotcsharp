@@ -18,13 +18,14 @@ namespace SimpleEchoBot.Views
                  );  */
             var h = new HeroCard
             {
-                Title = "Puedes escribir lo que buscas, o elegir una de estas opciones",
-                //Images = new List<CardImage> { new CardImage("https://images.pexels.com/photos/247932/pexels-photo-247932.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") },
-                Images = new List<CardImage> { new CardImage("http://tiendabots.azurewebsites.net/__public/buscar.png") },
+                Title = "Tengo algunas opciones para usted!",
+                Text = "Si deseas escribe el nombre de la pelicula y a buscaré.",
+                Images = new List<CardImage> { new CardImage("https://images.pexels.com/photos/247932/pexels-photo-247932.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") },
+                //Images = new List<CardImage> { new CardImage("http://tiendabots.azurewebsites.net/__public/buscar.png") },
                 Buttons = new List<CardAction> {
-                    new CardAction(ActionTypes.PostBack, "Genero", value: "321"),
-                    new CardAction(ActionTypes.PostBack, "Idioma", value: "123"),
-                    new CardAction(ActionTypes.PostBack, "ID", value: "ID")
+                    new CardAction(ActionTypes.PostBack, "Más populares", value: "1_popular"),
+                    new CardAction(ActionTypes.PostBack, "Más votados", value: "2_votado"),
+                    new CardAction(ActionTypes.PostBack, "En cartelera", value: "3_cartelera")
                 }
             };
 
