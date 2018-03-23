@@ -182,7 +182,7 @@
   <ItemGroup>
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\BusquedasDialog.cs" />
-    <Compile Include="Dialogs\RouterDialog.cs" />
+    <Compile Include="Dialogs\_RouterDialog.cs" />
     <Compile Include="Dialogs\SaludoDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,7 +191,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\BusquedaView.cs" />
     <Compile Include="Views\PeliculaView.cs" />
-    <Compile Include="__libs\LuisClass.cs" />
+    <Compile Include="__libs\LuisJson.cs" />
     <Compile Include="__libs\PeliculaJson.cs" />
     <Compile Include="__libs\ProductosGetURL.cs" />
     <Compile Include="__libs\WebApiConfig.cs" />

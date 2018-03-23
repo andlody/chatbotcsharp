@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SimpleEchoBot.__libs
 {
-    public class LuisClass
+    public class LuisJson
     {
         public string query { get; set; }
         public Intent[] intents { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using System;
 using System.Threading.Tasks;
 
 namespace SimpleEchoBot.Dialogs
@@ -28,10 +29,18 @@ namespace SimpleEchoBot.Dialogs
 
         public static async Task BusquedaId_Result(IDialogContext context, IAwaitable<object> result)
         {
-            //string text = (string)await result;
-            var message = await result as Activity;
-
-            switch (message.Text.ToLower())
+            //bool bnd = false;
+            string text = "cancelar";
+            try
+            {
+                text = (string)await result;
+            }
+            catch (Exception e) {
+                var message = await result as Activity;
+                text = message.Text;
+            }
+            
+            switch (text.ToLower())
             {
                 case "cancelar":
                     await context.PostAsync("canceaste barrigon.2");

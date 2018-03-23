@@ -24,7 +24,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             // check if activity is of type message
             if (activity != null && activity.GetActivityType() == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new RouterDialog());
+                await Conversation.SendAsync(activity, () => new _RouterDialog());
             }
             else
             {
@@ -51,7 +51,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                         if(nuevo.Id != message.Recipient.Id)
                         {
                             var reply = message.CreateReply();
-                            reply.Text = "Hola, bienvedio " + nuevo.Name;
+                            reply.Text = "Hola, bienvenido " + nuevo.Name+". Aquí econtraras todas las peliculas que busques.";
                             cliente.Conversations.ReplyToActivityAsync(reply);
                         }
                     }

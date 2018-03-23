@@ -13,17 +13,17 @@ using SimpleEchoBot.__libs;
 namespace Microsoft.Bot.Sample.SimpleEchoBot
 {
     [Serializable]
-    public class RouterDialog : IDialog
+    public class _RouterDialog : IDialog
     {
         public async Task StartAsync(IDialogContext context)
         {
             context.Wait(router);
         }    
 
-        private async Task router(IDialogContext context, IAwaitable<object> result)
+        public static async Task router(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result as Activity;
-            switch (message.Text)
+            switch (message.Text.ToLower())
             {
                 case "hola":
                     await context.PostAsync("Hola soy un bot.");
@@ -40,7 +40,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             }
         }
 
-        private async Task luis(IDialogContext context, IAwaitable<object> result)
+        private static async Task luis(IDialogContext context, IAwaitable<object> result)
         {
             const string idLuis     = "6af33858-401c-4d62-a4d2-2fe3c851a0a8";
             const string keyLuis    = "bb0918a4853048fa9e03090b9649fee7";
@@ -50,7 +50,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
             HttpClient client = new HttpClient();
             string response = await client.GetStringAsync(new Uri($"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/{idLuis}?subscription-key={keyLuis}&verbose=true&timezoneOffset=0&q={query}"));
-            LuisClass luis = JsonConvert.DeserializeObject<LuisClass>(response);
+            LuisJson luis = JsonConvert.DeserializeObject<LuisJson>(response);
 
             switch (luis.intents[0].intent)
             {

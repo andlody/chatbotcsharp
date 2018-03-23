@@ -23,7 +23,7 @@ namespace SimpleEchoBot.__libs
 
             HttpClient client = new HttpClient();
             string response = await client.GetStringAsync(new Uri($"https://api.themoviedb.org/3/{url}?api_key={api_key}&language=es"));
-            LuisClass luis = JsonConvert.DeserializeObject<LuisClass>(response);
+            LuisJson luis = JsonConvert.DeserializeObject<LuisJson>(response);
             switch (tipo)
             {
                 case 1:
