@@ -154,7 +154,7 @@ namespace SimpleEchoBot.Views
                     {
                         Url = "https://youtu.be/"+video.results[0].key
                     }
-                }
+                },
                 Buttons = new List<CardAction>
                 {
                     new CardAction()
