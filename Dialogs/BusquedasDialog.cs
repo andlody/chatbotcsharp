@@ -47,7 +47,10 @@ namespace SimpleEchoBot.Dialogs
             }
             else if(a.Length == 2)
             {
-                await __libs.ProductosGetURL.get(context, result, 0, a[1], -1);
+                if(a[1].ToLower().Equals("id"))
+                    await __libs.ProductosGetURL.get(context, result, 0, a[1], -1);
+                else
+                    await __libs.ProductosGetURL.get(context, result, 0, a[1], -1);
             }
             else
             {

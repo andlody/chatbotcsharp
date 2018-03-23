@@ -131,43 +131,24 @@ namespace SimpleEchoBot.Views
         public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video,string id)
         {
             var reply = context.MakeMessage();
-            var videocard = new VideoCard
-            {
-                /*Subtitle = video.results[0].name,
-                Media = new List<MediaUrl>
-                {
-                    new MediaUrl()
-                    {
-                        Url = "https://youtu.be/"+video.results[0].key
-                    }
-                }*/
-                Title = "Big Buck Bunny",
-                Subtitle = "by the Blender Institute",
-                Text = "Big Buck Bunny source film under Creative Commons License Attribution 3.0.",
-                Image = new ThumbnailUrl
-                {
-                    Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Big_buck_bunny_poster_big.jpg/220px-Big_buck_bunny_poster_big.jpg"
-                },
-                Media = new List<MediaUrl>
-                {
-                    new MediaUrl()
-                    {
-                        Url = "https://youtu.be/"+video.results[0].key
-                    }
-                },
-                Buttons = new List<CardAction>
-                {
-                    new CardAction()
-                    {
-                        Title = "Learn More",
-                        Type = ActionTypes.OpenUrl,
-                        Value = "https://peach.blender.org/"
-                    }
-                }
-            };
-            reply.Attachments.Add(videocard.ToAttachment());
-           
+            /*       var videocard = new VideoCard
+                   {
+                       Subtitle = video.results[0].name,
+                       Media = new List<MediaUrl>
+                       {
+                           new MediaUrl()
+                           {
+                               Url = "https://youtu.be/"+video.results[0].key
+                           }
+                       }
 
+
+
+        };
+            reply.Attachments.Add(videocard.ToAttachment());*/
+
+            //Activity replyToConversation = activity.CreateReply("Should go to conversation, with a hero card");
+            reply.Attachments.Add(new Attachment(contentType: "video/mp4", name: "Simple Attachment Name", thumbnailUrl: "https://s29.postimg.org/ei98jsp7r/My_Bot.jpg", contentUrl: "https://youtu.be/A9Vu9n7YxrI"));
 
 
             await context.PostAsync(reply);
