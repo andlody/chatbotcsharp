@@ -40,7 +40,7 @@ namespace SimpleEchoBot.Views
                 var h = new HeroCard
                 {
                     Title = "Aun hay más..!",
-                    Images = new List<CardImage> { new CardImage("https://images.pexels.com/photos/247932/pexels-photo-247932.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") },
+                    Images = new List<CardImage> { new CardImage("http://tiendabots.azurewebsites.net/__public/buscar.png") },
                     Buttons = new List<CardAction> {
                         new CardAction(ActionTypes.PostBack, "Buscar más", value: tipo+"#"+query+"#"+fin)
                     }
@@ -137,7 +137,7 @@ namespace SimpleEchoBot.Views
             }
             else
             {
-                await context.PostAsync("No lamento :( no encontre ningun video.");
+                await context.PostAsync("Lo lamento :( no encontre ningun video.");
             }
             context.Wait(_RouterDialog.router);
         }
