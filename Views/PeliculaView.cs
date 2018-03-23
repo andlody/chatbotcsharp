@@ -2,6 +2,7 @@
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Sample.SimpleEchoBot;
 using SimpleEchoBot.__libs;
+using SimpleEchoBot.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,59 +10,111 @@ namespace SimpleEchoBot.Views
 {
     public class PeliculaView
     {
-        public static async Task peliculaResumen(IDialogContext context, IAwaitable<object> result)
-        {
-            var message = await result as Activity;
-            await ProductosGetURL.get(context,result,1, message.Text);
-        }
-
-        public static async Task attachment(IDialogContext context, IAwaitable<object> result,object obj)
-        {
-            var reply = context.MakeMessage();
-
-            var att = PeliculaHeroResumen((PeliculaJson)obj);
-            reply.Attachments.Add(att);
-
-            await context.PostAsync(reply);
-            context.Wait(_RouterDialog.router);
-        }
-
-        public static Attachment PeliculaHeroResumen(PeliculaJson pelicula)
-        {
-            string overview = pelicula.overview;
-            if(overview.Length>150) pelicula.overview.Substring(0, 150);
-
-            var h = new HeroCard
-            {
-                Title = pelicula.title + " (" + pelicula.release_date.Split('-')[0] + ")",
-                Subtitle = pelicula.original_title+" ",
-                Text = " "+pelicula.overview,
-                Images = new List<CardImage> { new CardImage("https://image.tmdb.org/t/p/w342/"+pelicula.poster_path) },
-                Buttons = new List<CardAction> { new CardAction(ActionTypes.OpenUrl, "Ver más", value: "http://google.com") }
-            };
-            return h.ToAttachment();
-        }
-
-        public static async Task carruselPeliculas(IDialogContext context, IAwaitable<object> result, BusquedaJson obj)
+        public static async Task carruselPeliculas(IDialogContext context, IAwaitable<object> result, Busqueda obj,int tipo, string query, int fin)
         {
             var reply = context.MakeMessage();
             reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
 
-            for (int i = 0; i < 5; i++)
+            int ini = fin;
+            if (fin == -1)
             {
+                ini = 0;
+                fin = 0;
+            }
+
+            fin = fin + 5;
+
+
+            while(fin > obj.results.Length)
+            {
+                fin--;
+            }
+
+            for (int i = ini; i < fin; i++)
+            {                
+                reply.Attachments.Add(peliculaResumen(obj.results[i]));
+            }
+
+            if (obj.results.Length>fin) {
                 var h = new HeroCard
                 {
-                    Title = obj.results[i].title + " (" + obj.results[i].release_date.Split('-')[0] + ")",
-                    Subtitle = obj.results[i].original_title + " ",
-                    Text = " " + obj.results[i].overview,
-                    Images = new List<CardImage> { new CardImage("https://image.tmdb.org/t/p/w342/" + obj.results[i].poster_path) },
-                    Buttons = new List<CardAction> { new CardAction(ActionTypes.OpenUrl, "Ver más", value: "http://google.com") }
+                    Title = "Aun hay más..!",
+                    Images = new List<CardImage> { new CardImage("https://images.pexels.com/photos/247932/pexels-photo-247932.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") },
+                    Buttons = new List<CardAction> {
+                        new CardAction(ActionTypes.PostBack, "Buscar más", value: tipo+"#"+query+"#"+fin)
+                    }
                 };
                 reply.Attachments.Add(h.ToAttachment());
             }
 
             await context.PostAsync(reply);
-            //context.Wait(MessageR);
+
+
+            if (obj.results.Length <= fin)
+            {                
+                reply.Type = ActivityTypes.Typing;
+                await context.PostAsync(reply);
+                await context.PostAsync("Esos son todos mis resultados de busqueda.");
+            }
+            context.Wait(Dialogs.BusquedasDialog.carruselPeliculas_Result);
+        }
+
+
+        public static Attachment peliculaResumen(PeliculaResumen pelicula)
+        {
+            string overview = pelicula.overview;
+            if (overview.Length > 150) pelicula.overview.Substring(0, 150);
+
+            
+            var h = new HeroCard
+            {
+                Title = pelicula.title + " (" + pelicula.release_date.Split('-')[0] + ")",
+                Subtitle = pelicula.original_title + " ",
+                Text = " " + pelicula.overview,
+                Images = (pelicula.poster_path != null) ? new List<CardImage> { new CardImage("https://image.tmdb.org/t/p/w342/" + pelicula.poster_path) }:null,
+                Buttons = new List<CardAction> {
+                    new CardAction(ActionTypes.PostBack, "Más detalles", value: "id#"+pelicula.id)
+                }
+            };
+            return h.ToAttachment();
+        }
+
+        public static async Task peliculaCompleta(IDialogContext context, IAwaitable<object> result, PeliculaCompleta pelicula)
+        {
+            var reply = context.MakeMessage();
+            reply.Attachments.Add(new Attachment()
+            {
+                ContentUrl = "https://image.tmdb.org/t/p/w342/" + pelicula.poster_path,
+                ContentType = "image/jpg",
+                Name = pelicula.id+".jpg"
+            });
+            if(pelicula.poster_path != null) await context.PostAsync(reply);
+            await context.PostAsync(pelicula.title + " ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es "+pelicula.original_title+ ", fue producido en "+pelicula.production_countries[0].name+" por "+pelicula.production_companies[0].name);
+            await context.PostAsync(pelicula.overview);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static async Task attachment(IDialogContext context, IAwaitable<object> result, object obj)
+        {
+            var reply = context.MakeMessage();
+
+            //var att = PeliculaHeroResumen((PeliculaJson)obj);
+            // reply.Attachments.Add(att);
+
+            await context.PostAsync(reply);
+            context.Wait(_RouterDialog.router);
         }
     }
 }
