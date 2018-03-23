@@ -1,7 +1,5 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
-using Microsoft.Bot.Sample.SimpleEchoBot;
-using SimpleEchoBot.__libs;
 using SimpleEchoBot.Dialogs;
 using SimpleEchoBot.Models;
 using System.Collections.Generic;
@@ -142,10 +140,7 @@ namespace SimpleEchoBot.Views
                         Url = "https://youtu.be/"+video.results[0].key
                     }
                 }*/
-
-                Title = "Big Buck Bunny",
-                Subtitle = "by the Blender Institute",
-                Text = "Big Buck Bunny (code-named Peach) is a short computer-animated comedy film by the Blender Institute, part of the Blender Foundation. Like the foundation's previous film Elephants Dream, the film was made using Blender, a free software application for animation made by the same foundation. It was released as an open-source film under Creative Commons License Attribution 3.0.",
+                
                 Image = new ThumbnailUrl
                 {
                     Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Big_buck_bunny_poster_big.jpg/220px-Big_buck_bunny_poster_big.jpg"
@@ -154,16 +149,7 @@ namespace SimpleEchoBot.Views
                 {
                     new MediaUrl()
                     {
-                        Url = "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
-                    }
-                },
-                Buttons = new List<CardAction>
-                {
-                    new CardAction()
-                    {
-                        Title = "Learn More",
-                        Type = ActionTypes.OpenUrl,
-                        Value = "https://peach.blender.org/"
+                        Url = "https://youtu.be/"+video.results[0].key
                     }
                 }
             };
