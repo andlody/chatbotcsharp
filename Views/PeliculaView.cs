@@ -94,19 +94,19 @@ namespace SimpleEchoBot.Views
 
             reply.Type = ActivityTypes.Typing;
             await context.PostAsync(reply);
-            await Task.Delay(6000);
+            await Task.Delay(3000);
 
             await context.PostAsync(pelicula.title + "es una película de "+pelicula.genres[0].name+" ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es " + pelicula.original_title + ", fue producido en " + pelicula.production_countries[0].name + " por " + pelicula.production_companies[0].name);
 
             reply.Type = ActivityTypes.Typing;
             await context.PostAsync(reply);
-            await Task.Delay(10000);
+            await Task.Delay(6000);
 
             if (!pelicula.overview.Equals("")) await context.PostAsync(pelicula.overview);
 
             reply.Type = ActivityTypes.Typing;
             await context.PostAsync(reply);
-            await Task.Delay(3000);
+            await Task.Delay(8000);
 
             await PeliculaDialog.getVideo(context,result,""+pelicula.id);        
         }
@@ -118,8 +118,8 @@ namespace SimpleEchoBot.Views
             {
                 Text = "¿Deseas ver el Trailer de la pelicula?.",
                 Buttons = new List<CardAction> {
-                    new CardAction(ActionTypes.PostBack, "Si", value: id),
-                    new CardAction(ActionTypes.PostBack, "No", value: "no")
+                    new CardAction(ActionTypes.PostBack, "Si", value: "id#"+id),
+                    new CardAction(ActionTypes.PostBack, "No", value: "no#"+id)
                 }
             };
             
@@ -132,27 +132,43 @@ namespace SimpleEchoBot.Views
         public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video,string id)
         {
             var reply = context.MakeMessage();
-          /*  var videocard = new VideoCard
+            var videocard = new VideoCard
             {
-                Subtitle = video.results[0].name,
+                /*Subtitle = video.results[0].name,
                 Media = new List<MediaUrl>
                 {
                     new MediaUrl()
                     {
                         Url = "https://youtu.be/"+video.results[0].key
                     }
+                }*/
+
+                Title = "Big Buck Bunny",
+                Subtitle = "by the Blender Institute",
+                Text = "Big Buck Bunny (code-named Peach) is a short computer-animated comedy film by the Blender Institute, part of the Blender Foundation. Like the foundation's previous film Elephants Dream, the film was made using Blender, a free software application for animation made by the same foundation. It was released as an open-source film under Creative Commons License Attribution 3.0.",
+                Image = new ThumbnailUrl
+                {
+                    Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Big_buck_bunny_poster_big.jpg/220px-Big_buck_bunny_poster_big.jpg"
+                },
+                Media = new List<MediaUrl>
+                {
+                    new MediaUrl()
+                    {
+                        Url = "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
+                    }
+                },
+                Buttons = new List<CardAction>
+                {
+                    new CardAction()
+                    {
+                        Title = "Learn More",
+                        Type = ActionTypes.OpenUrl,
+                        Value = "https://peach.blender.org/"
+                    }
                 }
             };
             reply.Attachments.Add(videocard.ToAttachment());
-            */
-
-
-            reply.Attachments.Add(new Attachment()
-            {
-                ContentUrl = "https://youtu.be/" + video.results[0].key,
-                ContentType = "video/*",
-                Name = "Trailer: "+video.id
-            });
+           
 
 
 
@@ -168,14 +184,14 @@ namespace SimpleEchoBot.Views
             {
                 Text = "Tal vez te interese...",
                 Buttons = new List<CardAction> {
-                    new CardAction(ActionTypes.PostBack, "Similares 🔵", value: id),
-                    new CardAction(ActionTypes.PostBack, "Sugeridas 🔴", value: "no")
+                    new CardAction(ActionTypes.PostBack, "Similares 🔵", value: "1_similar#"+id),
+                    new CardAction(ActionTypes.PostBack, "Sugeridas 🔴", value: "2_sugerido#"+id)
                 }
             };
             reply.Attachments.Add(h.ToAttachment());
             await context.PostAsync(reply);
 
-            context.Wait(_RouterDialog.router);
+            context.Wait(BusquedasDialog.buscarPeliculaSimilar_Result);
         }
     }
 }

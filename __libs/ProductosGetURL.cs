@@ -24,6 +24,8 @@ namespace SimpleEchoBot.__libs
                     text = HttpUtility.UrlEncode(text);
                     url = $"search/movie?query={text}&"; break;
                 case 5: url = $"movie/{text}/videos?"; break;
+                case 6: url = $"movie/{text}/similar?"; break;
+                case 7: url = $"movie/{text}/recommendations?"; break;
             }
 
             const string api_key = "33a35968f1e69c959a10c0322b1a205f";

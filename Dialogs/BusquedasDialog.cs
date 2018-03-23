@@ -59,13 +59,15 @@ namespace SimpleEchoBot.Dialogs
         {
             var message = await result as Activity;
 
-            switch (message.Text.ToLower())
+            string[] a = message.Text.Split('#');
+
+            switch (a[0].ToLower())
             {
                 case "1_similar":
-                    await __libs.ProductosGetURL.get(context, result, 6, message.Text, -1);
+                    await __libs.ProductosGetURL.get(context, result, 6, a[1], -1);
                     break;
                 case "2_sugerido":
-                    await __libs.ProductosGetURL.get(context, result, 7, message.Text, -1);
+                    await __libs.ProductosGetURL.get(context, result, 7, a[1], -1);
                     break;
                 default:
                     context.Wait(_RouterDialog.router);

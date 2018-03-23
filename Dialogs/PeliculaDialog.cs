@@ -20,10 +20,12 @@ namespace SimpleEchoBot.Dialogs
         public static async Task verVideo(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result as Activity;
-            if (!message.Text.ToLower().Equals("no"))
-                await __libs.ProductosGetURL.get(context, result, 5, message.Text, 1);
+            string[] a = message.Text.Split('#');
+
+            if (!message.Text.ToLower().Equals(a[0]))
+                await __libs.ProductosGetURL.get(context, result, 5, a[1], 1);
             else
-                context.Wait(_RouterDialog.router);
+                await Views.PeliculaView.buscarPeliculaSimilar(context, result, a[1]);
         }
     }
 }
