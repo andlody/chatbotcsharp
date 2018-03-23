@@ -40,7 +40,7 @@ namespace SimpleEchoBot.Views
                 var h = new HeroCard
                 {
                     Title = "Aun hay más..!",
-                    Images = new List<CardImage> { new CardImage("http://tiendabots.azurewebsites.net/__public/buscar.png") },
+                    Images = new List<CardImage> { new CardImage("http://tiendabots.azurewebsites.net/__public/bot_buscar.png") },
                     Buttons = new List<CardAction> {
                         new CardAction(ActionTypes.PostBack, "Buscar más", value: tipo+"#"+query+"#"+fin)
                     }
@@ -94,10 +94,10 @@ namespace SimpleEchoBot.Views
             await context.PostAsync(pelicula.title + "es una película de "+pelicula.genres[0].name+" ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es " + pelicula.original_title + ", fue producido en " + pelicula.production_countries[0].name + " por " + pelicula.production_companies[0].name);
             if(!pelicula.overview.Equals("")) await context.PostAsync(pelicula.overview);
 
-            await verVideoConsulta(context,result,""+pelicula.id);        
+            await PeliculaDialog.getVideo(context,result,""+pelicula.id);        
         }
 
-        public static async Task verVideoConsulta(IDialogContext context, IAwaitable<object> result, string id)
+        public static async Task verVideoConsulta(IDialogContext context, IAwaitable<object> result, Video video, string id)
         {
             var reply = context.MakeMessage();
             var h = new HeroCard
@@ -108,37 +108,47 @@ namespace SimpleEchoBot.Views
                     new CardAction(ActionTypes.PostBack, "No", value: "no")
                 }
             };
-
-            reply = context.MakeMessage();
+            
             reply.Attachments.Add(h.ToAttachment());
 
             await context.PostAsync(reply);
             context.Wait(PeliculaDialog.verVideo);
         }
 
-        public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video)
+        public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video,string id)
         {
-            if (video.results.Length > 1)
+            var reply = context.MakeMessage();
+            var videocard = new VideoCard
             {
-                var reply = context.MakeMessage();
-                var videocard = new VideoCard
+                Subtitle = video.results[0].name,
+                Media = new List<MediaUrl>
                 {
-                    Subtitle = video.results[0].name,
-                    Media = new List<MediaUrl>
+                    new MediaUrl()
                     {
-                        new MediaUrl()
-                        {
-                            Url = "https://youtu.be/"+video.results[0].key
-                        }
+                        Url = "https://youtu.be/"+video.results[0].key
                     }
-                };
-                reply.Attachments.Add(videocard.ToAttachment());
-                await context.PostAsync(reply);
-            }
-            else
+                }
+            };
+            reply.Attachments.Add(videocard.ToAttachment());
+            await context.PostAsync(reply);
+
+            await buscarPeliculaSimilar(context,result,id);
+        }
+
+        public static async Task buscarPeliculaSimilar(IDialogContext context, IAwaitable<object> result, string id)
+        {
+            var reply = context.MakeMessage();
+            var h = new HeroCard
             {
-                await context.PostAsync("Lo lamento :( no encontre ningun video.");
-            }
+                Text = "Tal vez te interese...",
+                Buttons = new List<CardAction> {
+                    new CardAction(ActionTypes.PostBack, "Peliculas similares 🔵", value: id),
+                    new CardAction(ActionTypes.PostBack, "Peliculas sugeridas 🔴", value: "no")
+                }
+            };
+            reply.Attachments.Add(h.ToAttachment());
+            await context.PostAsync(reply);
+
             context.Wait(_RouterDialog.router);
         }
     }

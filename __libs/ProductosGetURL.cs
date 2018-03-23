@@ -12,6 +12,7 @@ namespace SimpleEchoBot.__libs
     {
         public static async Task get(IDialogContext context, IAwaitable<object> result,int tipo, string text, int fin)
         {
+           
             string url = "";
             switch (tipo)
             {
@@ -35,9 +36,32 @@ namespace SimpleEchoBot.__libs
                 case 0:
                     await Views.PeliculaView.peliculaCompleta(context, result, JsonConvert.DeserializeObject<PeliculaCompleta>(response));
                     break;
-                case 5:
-                    await Views.PeliculaView.verVideo(context, result, JsonConvert.DeserializeObject<Video>(response));
-                    break;
+                case 5: 
+                    Video vd = JsonConvert.DeserializeObject<Video>(response);
+                    if (fin == 1)
+                    {
+                        await Views.PeliculaView.verVideo(context, result, vd, text);
+                    }
+                    else
+                    {
+                        if (vd.results.Length > 0)
+                        {
+                            if (vd.results[0].site.ToLower().Equals("youtube"))
+                            {
+                                await Views.PeliculaView.verVideoConsulta(context, result, vd, text);
+                            }
+                            else
+                            {
+                                await Views.PeliculaView.buscarPeliculaSimilar(context, result, text);
+                            }
+                        }
+                        else
+                        {
+                            await Views.PeliculaView.buscarPeliculaSimilar(context, result, text);
+                        }
+                    }
+
+            break;
                 default:
                     Busqueda bsq = JsonConvert.DeserializeObject<Busqueda>(response);
                     if (bsq.results.Length > 0)
