@@ -183,6 +183,7 @@
   <ItemGroup>
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\BusquedasDialog.cs" />
+    <Compile Include="Dialogs\PeliculaDialog.cs" />
     <Compile Include="Dialogs\_RouterDialog.cs" />
     <Compile Include="Dialogs\SaludoDialog.cs" />
     <Compile Include="Global.asax.cs">
@@ -191,6 +192,7 @@
     <Compile Include="Models\Busqueda.cs" />
     <Compile Include="Models\PeliculaCompleta.cs" />
     <Compile Include="Models\PeliculaResumen.cs" />
+    <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\BusquedaView.cs" />
     <Compile Include="Views\PeliculaView.cs" />

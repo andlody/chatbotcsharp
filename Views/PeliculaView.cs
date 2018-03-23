@@ -2,6 +2,7 @@
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Sample.SimpleEchoBot;
 using SimpleEchoBot.__libs;
+using SimpleEchoBot.Dialogs;
 using SimpleEchoBot.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -86,12 +87,47 @@ namespace SimpleEchoBot.Views
             {
                 ContentUrl = "https://image.tmdb.org/t/p/w342/" + pelicula.poster_path,
                 ContentType = "image/jpg",
-                Name = pelicula.id+".jpg"
+                Name = pelicula.id + ".jpg"
             });
-            if(pelicula.poster_path != null) await context.PostAsync(reply);
-            await context.PostAsync(pelicula.title + " ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es "+pelicula.original_title+ ", fue producido en "+pelicula.production_countries[0].name+" por "+pelicula.production_companies[0].name);
+            if (pelicula.poster_path != null) await context.PostAsync(reply);
+            await context.PostAsync(pelicula.title + " ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es " + pelicula.original_title + ", fue producido en " + pelicula.production_countries[0].name + " por " + pelicula.production_companies[0].name);
             await context.PostAsync(pelicula.overview);
+           
+                PromptDialog.Choice(
+                    context,
+                    PeliculaDialog.verVideo,
+                    new[] { ""+pelicula.id, "No" },
+                    "¿Quieres ver un video?",
+                    promptStyle: PromptStyle.Keyboard,
+                    descriptions: new[] { "Si", "No" }
+                 );
+           
+        }
 
+        public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video)
+        {
+            if (video.results.Length > 1)
+            {
+                var reply = context.MakeMessage();
+                var videocard = new VideoCard
+                {
+                    Subtitle = video.results[0].name,
+                    Media = new List<MediaUrl>
+                    {
+                        new MediaUrl()
+                        {
+                            Url = "https://youtu.be/"+video.results[0].key
+                        }
+                    }
+                };
+                reply.Attachments.Add(videocard.ToAttachment());
+                await context.PostAsync(reply);
+            }
+            else
+            {
+                await context.PostAsync("No lamento :( no encontre ningun video.");
+            }
+            context.Wait(_RouterDialog.router);
         }
 
 

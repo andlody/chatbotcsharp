@@ -22,6 +22,7 @@ namespace SimpleEchoBot.__libs
                 case 4:
                     text = HttpUtility.UrlEncode(text);
                     url = $"search/movie?query={text}&"; break;
+                case 5: url = $"movie/{text}/videos?"; break;
             }
 
             const string api_key = "33a35968f1e69c959a10c0322b1a205f";
@@ -29,13 +30,17 @@ namespace SimpleEchoBot.__libs
             HttpClient client = new HttpClient();
             string response = await client.GetStringAsync(new Uri($"https://api.themoviedb.org/3/{url}api_key={api_key}&language=es"));
 
-            if (tipo == 0)
+            switch (tipo)
             {
-                await Views.PeliculaView.peliculaCompleta(context, result, JsonConvert.DeserializeObject<PeliculaCompleta>(response));
-            }
-            else
-            {
-                await Views.PeliculaView.carruselPeliculas(context, result, JsonConvert.DeserializeObject<Busqueda>(response), tipo, text, fin);
+                case 0:
+                    await Views.PeliculaView.peliculaCompleta(context, result, JsonConvert.DeserializeObject<PeliculaCompleta>(response));
+                    break;
+                case 5:
+                    await Views.PeliculaView.verVideo(context, result, JsonConvert.DeserializeObject<Video>(response));
+                    break;
+                default:
+                    await Views.PeliculaView.carruselPeliculas(context, result, JsonConvert.DeserializeObject<Busqueda>(response), tipo, text, fin);
+                    break;
             }                    
         }
     }
