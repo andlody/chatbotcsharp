@@ -91,8 +91,22 @@ namespace SimpleEchoBot.Views
                 Name = pelicula.id + ".jpg"
             });
             if (pelicula.poster_path != null) await context.PostAsync(reply);
+
+            reply.Type = ActivityTypes.Typing;
+            await context.PostAsync(reply);
+            await Task.Delay(6000);
+
             await context.PostAsync(pelicula.title + "es una película de "+pelicula.genres[0].name+" ( Fecha de extreno: " + pelicula.release_date + "), su nombre original es " + pelicula.original_title + ", fue producido en " + pelicula.production_countries[0].name + " por " + pelicula.production_companies[0].name);
-            if(!pelicula.overview.Equals("")) await context.PostAsync(pelicula.overview);
+
+            reply.Type = ActivityTypes.Typing;
+            await context.PostAsync(reply);
+            await Task.Delay(10000);
+
+            if (!pelicula.overview.Equals("")) await context.PostAsync(pelicula.overview);
+
+            reply.Type = ActivityTypes.Typing;
+            await context.PostAsync(reply);
+            await Task.Delay(3000);
 
             await PeliculaDialog.getVideo(context,result,""+pelicula.id);        
         }
@@ -118,7 +132,7 @@ namespace SimpleEchoBot.Views
         public static async Task verVideo(IDialogContext context, IAwaitable<object> result,Video video,string id)
         {
             var reply = context.MakeMessage();
-            var videocard = new VideoCard
+          /*  var videocard = new VideoCard
             {
                 Subtitle = video.results[0].name,
                 Media = new List<MediaUrl>
@@ -130,6 +144,18 @@ namespace SimpleEchoBot.Views
                 }
             };
             reply.Attachments.Add(videocard.ToAttachment());
+            */
+
+
+            reply.Attachments.Add(new Attachment()
+            {
+                ContentUrl = "https://youtu.be/" + video.results[0].key,
+                ContentType = "video/*",
+                Name = "Trailer: "+video.id
+            });
+
+
+
             await context.PostAsync(reply);
 
             await buscarPeliculaSimilar(context,result,id);
@@ -142,8 +168,8 @@ namespace SimpleEchoBot.Views
             {
                 Text = "Tal vez te interese...",
                 Buttons = new List<CardAction> {
-                    new CardAction(ActionTypes.PostBack, "Peliculas similares 🔵", value: id),
-                    new CardAction(ActionTypes.PostBack, "Peliculas sugeridas 🔴", value: "no")
+                    new CardAction(ActionTypes.PostBack, "Similares 🔵", value: id),
+                    new CardAction(ActionTypes.PostBack, "Sugeridas 🔴", value: "no")
                 }
             };
             reply.Attachments.Add(h.ToAttachment());

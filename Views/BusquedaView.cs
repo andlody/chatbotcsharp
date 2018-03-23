@@ -17,9 +17,9 @@ namespace SimpleEchoBot.Views
                 //Images = new List<CardImage> { new CardImage("https://images.pexels.com/photos/247932/pexels-photo-247932.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") },
                 //Images = new List<CardImage> { new CardImage("http://tiendabots.azurewebsites.net/__public/buscar.png") },
                 Buttons = new List<CardAction> {
-                    new CardAction(ActionTypes.PostBack, "Más populares", value: "1_popular"),
-                    new CardAction(ActionTypes.PostBack, "Más votados", value: "2_votado"),
-                    new CardAction(ActionTypes.PostBack, "En cartelera", value: "3_cartelera")
+                    new CardAction(ActionTypes.PostBack, "Más populares 🌐", value: "1_popular"),
+                    new CardAction(ActionTypes.PostBack, "Más votados 🔵", value: "2_votado"),
+                    new CardAction(ActionTypes.PostBack, "En cartelera 🔴", value: "3_cartelera")
                 }
             };
 

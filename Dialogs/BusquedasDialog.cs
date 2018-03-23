@@ -55,5 +55,23 @@ namespace SimpleEchoBot.Dialogs
             }
         }
 
+        public static async Task buscarPeliculaSimilar_Result(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result as Activity;
+
+            switch (message.Text.ToLower())
+            {
+                case "1_similar":
+                    await __libs.ProductosGetURL.get(context, result, 6, message.Text, -1);
+                    break;
+                case "2_sugerido":
+                    await __libs.ProductosGetURL.get(context, result, 7, message.Text, -1);
+                    break;
+                default:
+                    context.Wait(_RouterDialog.router);
+                    break;
+            }
+        }
+
     }
 }
