@@ -56,7 +56,7 @@ namespace SimpleEchoBot.Views
                 await Task.Delay(4000);
                 await context.PostAsync("Esos son todos mis resultados de busqueda.");
             }
-            context.Wait(Dialogs.BusquedasDialog.carruselPeliculas_Result);
+            context.Wait(BusquedasDialog.carruselPeliculas_Result);
         }
 
 
@@ -73,6 +73,7 @@ namespace SimpleEchoBot.Views
                 Text = " " + pelicula.overview,
                 Images = (pelicula.poster_path != null) ? new List<CardImage> { new CardImage("https://image.tmdb.org/t/p/w342/" + pelicula.poster_path) }:null,
                 Buttons = new List<CardAction> {
+                    new CardAction(ActionTypes.PostBack, "Comprar ✅", value: "comprar#"+pelicula.id),
                     new CardAction(ActionTypes.PostBack, "Más detalles", value: "id#"+pelicula.id)
                 }
             };
@@ -140,7 +141,9 @@ namespace SimpleEchoBot.Views
                         Url = "https://youtu.be/"+video.results[0].key
                     }
                 }*/
-                
+                Title = "Big Buck Bunny",
+                Subtitle = "by the Blender Institute",
+                Text = "Big Buck Bunny source film under Creative Commons License Attribution 3.0.",
                 Image = new ThumbnailUrl
                 {
                     Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Big_buck_bunny_poster_big.jpg/220px-Big_buck_bunny_poster_big.jpg"
@@ -150,6 +153,15 @@ namespace SimpleEchoBot.Views
                     new MediaUrl()
                     {
                         Url = "https://youtu.be/"+video.results[0].key
+                    }
+                }
+                Buttons = new List<CardAction>
+                {
+                    new CardAction()
+                    {
+                        Title = "Learn More",
+                        Type = ActionTypes.OpenUrl,
+                        Value = "https://peach.blender.org/"
                     }
                 }
             };
